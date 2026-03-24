@@ -1,0 +1,43 @@
+{% extends 'eventos/base.html' %}
+{% block title %}Configuración Global - Singleton{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h3 class="mb-0"><i class="fas fa-cog"></i> Configuración Global <small class="badge bg-light text-dark ms-2">Patrón Singleton</small></h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    Esta configuración es única en todo el sistema (patrón Singleton).
+                    Los cambios afectan a toda la aplicación.
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}<small class="text-muted">{{ field.help_text }}</small>{% endif %}
+                        {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-dark">
+                        <i class="fas fa-save"></i> Guardar Configuración
+                    </button>
+                </form>
+                <hr>
+                <h5>Estado actual del Singleton:</h5>
+                <table class="table table-sm">
+                    <tr><th>Moneda:</th><td>{{ config.moneda }}</td></tr>
+                    <tr><th>Impuestos:</th><td>{{ config.impuestos }}%</td></tr>
+                    <tr><th>Límite asistentes:</th><td>{{ config.limite_asistentes }}</td></tr>
+                    <tr><th>Notificaciones:</th><td>{{ config.notificaciones|yesno:"Activas,Inactivas" }}</td></tr>
+                    <tr><th>Modo mantenimiento:</th><td>{{ config.modo_mantenimiento|yesno:"Activado,Desactivado" }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

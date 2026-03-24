@@ -1,0 +1,73 @@
+{% extends 'eventos/base.html' %}
+{% block title %}Constructor de Eventos{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0"><i class="fas fa-tools"></i> Constructor de Eventos <small class="badge bg-light text-dark ms-2">Patrón Builder</small></h3>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Construye un evento paso a paso seleccionando el tipo de configuración base.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de constructor</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check card p-3 border-primary">
+                                    <input class="form-check-input" type="radio" name="tipo_builder" value="conferencia" id="tipo_conf" checked>
+                                    <label class="form-check-label" for="tipo_conf">
+                                        <strong>Conferencia</strong><br>
+                                        <small class="text-muted">Incluye: Escenario, Iluminación, Seguridad, Streaming, Catering</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check card p-3 border-warning">
+                                    <input class="form-check-input" type="radio" name="tipo_builder" value="boda" id="tipo_boda">
+                                    <label class="form-check-label" for="tipo_boda">
+                                        <strong>Boda</strong><br>
+                                        <small class="text-muted">Incluye: Catering, Decoración, Iluminación, Seguridad</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre del evento *</label>
+                            <input type="text" name="nombre" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ubicación</label>
+                            <select name="ubicacion" class="form-select">
+                                <option value="">Sin ubicación</option>
+                                {% for ubicacion in ubicaciones %}
+                                <option value="{{ ubicacion.id }}">{{ ubicacion.nombre }} - {{ ubicacion.ciudad }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Fecha y hora *</label>
+                            <input type="datetime-local" name="fecha" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Capacidad</label>
+                            <input type="number" name="capacidad" class="form-control" value="100" min="1">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Presupuesto</label>
+                            <input type="number" name="presupuesto" class="form-control" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-hammer"></i> Construir Evento
+                    </button>
+                    <a href="{% url 'index' %}" class="btn btn-secondary ms-2">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'eventos/base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header">
+                <h3 class="mb-0">{{ titulo }}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.nombre.label }}</label>
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}<div class="text-danger">{{ form.nombre.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.tipo.label }}</label>
+                            {{ form.tipo }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.fecha.label }}</label>
+                            {{ form.fecha }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.fecha_fin.label }}</label>
+                            {{ form.fecha_fin }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.ubicacion.label }}</label>
+                            {{ form.ubicacion }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">{{ form.capacidad.label }}</label>
+                            {{ form.capacidad }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">{{ form.presupuesto.label }}</label>
+                            {{ form.presupuesto }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.estado.label }}</label>
+                            {{ form.estado }}
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">{{ form.descripcion.label }}</label>
+                            {{ form.descripcion }}
+                        </div>
+                    </div>
+                    <h5>Servicios</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><div class="form-check">{{ form.catering }} <label class="form-check-label">{{ form.catering.label }}</label></div></div>
+                        <div class="col-md-4"><div class="form-check">{{ form.escenario }} <label class="form-check-label">{{ form.escenario.label }}</label></div></div>
+                        <div class="col-md-4"><div class="form-check">{{ form.iluminacion }} <label class="form-check-label">{{ form.iluminacion.label }}</label></div></div>
+                        <div class="col-md-4"><div class="form-check">{{ form.seguridad }} <label class="form-check-label">{{ form.seguridad.label }}</label></div></div>
+                        <div class="col-md-4"><div class="form-check">{{ form.streaming }} <label class="form-check-label">{{ form.streaming.label }}</label></div></div>
+                        <div class="col-md-4"><div class="form-check">{{ form.decoracion }} <label class="form-check-label">{{ form.decoracion.label }}</label></div></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.servicios.label }}</label>
+                        {{ form.servicios }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

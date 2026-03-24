@@ -1,0 +1,95 @@
+{% extends 'eventos/base.html' %}
+{% block title %}{{ evento.nombre }} - Detalle{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ evento.nombre }}</h1>
+    <div>
+        {% if user == evento.organizador %}
+        <a href="{% url 'evento_editar' evento.pk %}" class="btn btn-warning">
+            <i class="fas fa-edit"></i> Editar
+        </a>
+        {% endif %}
+        <a href="{% url 'evento_clonar' evento.pk %}" class="btn btn-info text-white">
+            <i class="fas fa-clone"></i> Clonar
+        </a>
+        {% if user == evento.organizador %}
+        <a href="{% url 'evento_eliminar' evento.pk %}" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Eliminar
+        </a>
+        {% endif %}
+        <a href="{% url 'index' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+{% if evento.es_clon %}
+<div class="alert alert-info">
+    <i class="fas fa-copy"></i> Este evento es una copia de 
+    <a href="{% url 'evento_detalle' evento.evento_original.pk %}">{{ evento.evento_original.nombre }}</a>
+    <span class="badge bg-info ms-2">Patrón Prototype</span>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="mb-0">Información General</h5></div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr><th>Tipo:</th><td>{{ evento.tipo.nombre|default:"Sin tipo" }}</td></tr>
+                    <tr><th>Estado:</th><td><span class="badge bg-primary">{{ evento.get_estado_display }}</span></td></tr>
+                    <tr><th>Fecha inicio:</th><td>{{ evento.fecha|date:"d/m/Y H:i" }}</td></tr>
+                    {% if evento.fecha_fin %}<tr><th>Fecha fin:</th><td>{{ evento.fecha_fin|date:"d/m/Y H:i" }}</td></tr>{% endif %}
+                    <tr><th>Ubicación:</th><td>{{ evento.ubicacion|default:"Sin ubicación" }}</td></tr>
+                    <tr><th>Capacidad:</th><td>{{ evento.capacidad }} personas</td></tr>
+                    <tr><th>Presupuesto:</th><td>{{ config.moneda }} {{ evento.presupuesto }}</td></tr>
+                    <tr><th>Organizador:</th><td>{{ evento.organizador.username }}</td></tr>
+                </table>
+                {% if evento.descripcion %}
+                <hr>
+                <p>{{ evento.descripcion }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tools"></i> Servicios (Builder)</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        Catering <span class="badge bg-{{ evento.catering|yesno:'success,secondary' }}">{{ evento.catering|yesno:'Sí,No' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        Escenario <span class="badge bg-{{ evento.escenario|yesno:'success,secondary' }}">{{ evento.escenario|yesno:'Sí,No' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        Iluminación <span class="badge bg-{{ evento.iluminacion|yesno:'success,secondary' }}">{{ evento.iluminacion|yesno:'Sí,No' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        Seguridad <span class="badge bg-{{ evento.seguridad|yesno:'success,secondary' }}">{{ evento.seguridad|yesno:'Sí,No' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        Streaming <span class="badge bg-{{ evento.streaming|yesno:'success,secondary' }}">{{ evento.streaming|yesno:'Sí,No' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        Decoración <span class="badge bg-{{ evento.decoracion|yesno:'success,secondary' }}">{{ evento.decoracion|yesno:'Sí,No' }}</span>
+                    </li>
+                </ul>
+                {% if evento.servicios.all %}
+                <hr>
+                <h6>Servicios adicionales:</h6>
+                <ul class="list-unstyled">
+                    {% for servicio in evento.servicios.all %}
+                    <li><i class="fas fa-check text-success"></i> {{ servicio.nombre }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

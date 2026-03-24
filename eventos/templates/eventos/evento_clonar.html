@@ -1,0 +1,36 @@
+{% extends 'eventos/base.html' %}
+{% block title %}Clonar Evento - {{ evento_original.nombre }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0"><i class="fas fa-clone"></i> Clonar Evento <small class="badge bg-light text-dark ms-2">Patrón Prototype</small></h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Evento original:</strong> {{ evento_original.nombre }}<br>
+                    <small>Puedes modificar el nombre y la fecha del nuevo evento.</small>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.nombre.label }}</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.fecha.label }}</label>
+                        {{ form.fecha }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-info text-white">
+                            <i class="fas fa-clone"></i> Clonar Evento
+                        </button>
+                        <a href="{% url 'evento_detalle' evento_original.pk %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
